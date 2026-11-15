@@ -67,6 +67,8 @@ The result is below the 3–5 MB goal without triangle simplification. Texture d
 
 Raw measurements are in `docs/asset-metrics.json` and are also published at `asset-metrics.json`. `window.joyMetrics` exposes camera/model/tracker-ready time, first rendered scene frame, marker-to-frame delay, representative FPS, draw calls, triangles, and anchor position. Times are milliseconds since the user starts a mode; cached resources are reused within a tab. Failed model requests clear the shared promise and can retry. Exit, navigation, and switching away from an AR tab stop camera tracks. Paused/hidden content stops animation and sound.
 
+At the deployed URL, the synthetic AR fixture reached its first scene frame in **4.41 s cold / 0.78 s warm**, transferring about **1.45 MB / 0 asset bytes**. Conditions: Chromium 145, i7-12700K, SwiftShader software GPU, DPR 1.5, 4× CPU slowdown, 10 Mbps and 80 ms latency. Representative AR FPS was **12.4–12.6**; this throttled desktop simulation did not meet 30 FPS and does not establish A55 performance. [Full results and limitations](docs/verification.md).
+
 ## Deployment and validation
 
 `.github/workflows/pages.yml` runs `npm ci`, type and asset checks, the static build, Chromium installation, and browser tests before publishing with the official GitHub Pages actions. The Vite base is `/Ar-Mvp/`; model, calibration, Meshopt decoder, embedded tracker WASM, CSS, and JS are served from this origin and path. No external worker/decoder fetch is needed by the selected barcode path. Pages is configured to use GitHub Actions.

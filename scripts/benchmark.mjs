@@ -1,5 +1,6 @@
 import {chromium} from '@playwright/test';
 import fs from 'node:fs/promises';
+import {cpus} from 'node:os';
 const url=process.argv[2]||'http://127.0.0.1:4173/Ar-Mvp/';
 const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const results=[];
@@ -30,6 +31,6 @@ try {
  await context.close();
  }
  await fs.mkdir('docs',{recursive:true});
- await fs.writeFile('docs/load-benchmark.json',JSON.stringify({url,conditions:{viewport:'412×915',dpr:1.5,network:'10 Mbps down / 2 Mbps up, 80 ms latency',cpu:'4× CPU slowdown',rendering:'Windows desktop Chromium / ANGLE SwiftShader software GPU',actualPhone:false},results},null,2));
+ await fs.writeFile('docs/load-benchmark.json',JSON.stringify({url,measuredAt:new Date().toISOString(),conditions:{viewport:'412×915',dpr:1.5,network:'10 Mbps down / 2 Mbps up, 80 ms latency',cpu:`${cpus()[0]?.model||'unknown'} with 4× CPU slowdown`,rendering:'Chromium / ANGLE SwiftShader software GPU',actualPhone:false,camera:'Synthetic SVG canvas captureStream, no permission dialog wait',transfers:'Resource Timing entries; excludes the navigation HTML'},results},null,2));
  console.log(JSON.stringify(results.map(r=>({mode:r.mode,warm:r.warm,metrics:r.metrics,transferBytes:r.resources.reduce((n,r)=>n+r.transferSize,0)})),null,2));
 }finally{await browser.close();}

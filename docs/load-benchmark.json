@@ -1,0 +1,229 @@
+{
+  "url": "https://rezasoroush28.github.io/Ar-Mvp/",
+  "measuredAt": "2026-11-15T11:36:32.551Z",
+  "conditions": {
+    "viewport": "412×915",
+    "dpr": 1.5,
+    "network": "10 Mbps down / 2 Mbps up, 80 ms latency",
+    "cpu": "Intel Core i7-12700K with 4× CPU slowdown",
+    "rendering": "Windows desktop Chromium / ANGLE SwiftShader software GPU",
+    "actualPhone": false,
+    "camera": "Synthetic SVG canvas captureStream, no permission dialog wait"
+  },
+  "results": [
+    {
+      "warm": false,
+      "mode": "3d",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+      "metrics": {
+        "started": 1143.2000000029802,
+        "modelReady": 2635.2000000029802,
+        "firstFrame": 2827.1000000089407,
+        "drawCalls": 19,
+        "triangles": 131972,
+        "anchorX": 0,
+        "anchorY": 0,
+        "anchorZ": 0,
+        "fps": 17.419916771508756
+      },
+      "resources": [
+        {
+          "name": "index-Dc5dvPlv.js",
+          "transferSize": 2315,
+          "encodedBodySize": 2015,
+          "duration": 262.3999999910593
+        },
+        {
+          "name": "index-puiP-bMX.css",
+          "transferSize": 2797,
+          "encodedBodySize": 2497,
+          "duration": 261.70000000298023
+        },
+        {
+          "name": "viewer-CS7w73-M.js",
+          "transferSize": 175456,
+          "encodedBodySize": 175156,
+          "duration": 716.3999999910593
+        },
+        {
+          "name": "joy-0e271734dcd4.glb",
+          "transferSize": 969346,
+          "encodedBodySize": 969046,
+          "duration": 1665.2999999970198
+        }
+      ],
+      "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "warm": true,
+      "mode": "3d",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+      "metrics": {
+        "started": 1344.7999999970198,
+        "modelReady": 192.09999999403954,
+        "firstFrame": 367.8999999910593,
+        "drawCalls": 19,
+        "triangles": 131972,
+        "anchorX": 0,
+        "anchorY": 0,
+        "anchorZ": 0,
+        "fps": 19.673421207948056
+      },
+      "resources": [
+        {
+          "name": "index-Dc5dvPlv.js",
+          "transferSize": 0,
+          "encodedBodySize": 2015,
+          "duration": 0
+        },
+        {
+          "name": "index-puiP-bMX.css",
+          "transferSize": 0,
+          "encodedBodySize": 2497,
+          "duration": 0
+        },
+        {
+          "name": "viewer-CS7w73-M.js",
+          "transferSize": 0,
+          "encodedBodySize": 175156,
+          "duration": 0
+        },
+        {
+          "name": "joy-0e271734dcd4.glb",
+          "transferSize": 0,
+          "encodedBodySize": 969046,
+          "duration": 4.9000000059604645
+        }
+      ],
+      "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "warm": false,
+      "mode": "ar",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+      "metrics": {
+        "started": 1572.6000000089407,
+        "cameraReady": 734.7999999970198,
+        "modelReady": 3897.5999999940395,
+        "trackerReady": 4141.399999991059,
+        "firstFrame": 4411.899999991059,
+        "markerToFrame": 199.09999999403954,
+        "drawCalls": 19,
+        "triangles": 131972,
+        "anchorX": -0.0024113006591796426,
+        "anchorY": -0.0033870103359222416,
+        "anchorZ": -0.3642837829589844,
+        "fps": 12.581051001645223
+      },
+      "resources": [
+        {
+          "name": "index-Dc5dvPlv.js",
+          "transferSize": 2315,
+          "encodedBodySize": 2015,
+          "duration": 216
+        },
+        {
+          "name": "index-puiP-bMX.css",
+          "transferSize": 2797,
+          "encodedBodySize": 2497,
+          "duration": 223.5
+        },
+        {
+          "name": "marker.svg",
+          "transferSize": 582,
+          "encodedBodySize": 282,
+          "duration": 264.29999999701977
+        },
+        {
+          "name": "viewer-CS7w73-M.js",
+          "transferSize": 175456,
+          "encodedBodySize": 175156,
+          "duration": 649
+        },
+        {
+          "name": "joy-0e271734dcd4.glb",
+          "transferSize": 969346,
+          "encodedBodySize": 969046,
+          "duration": 2796.5
+        },
+        {
+          "name": "tracker-BuB_4bRZ.js",
+          "transferSize": 303919,
+          "encodedBodySize": 303619,
+          "duration": 2719.8999999910593
+        },
+        {
+          "name": "camera_para.dat",
+          "transferSize": 476,
+          "encodedBodySize": 176,
+          "duration": 267
+        }
+      ],
+      "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "warm": true,
+      "mode": "ar",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/145.0.7632.6 Safari/537.36",
+      "metrics": {
+        "started": 366.59999999403954,
+        "cameraReady": 176.30000001192093,
+        "trackerReady": 393.20000000298023,
+        "drawCalls": 19,
+        "triangles": 131972,
+        "anchorX": -0.0024113006591796426,
+        "anchorY": -0.0033870103359222416,
+        "anchorZ": -0.3642837829589844,
+        "modelReady": 570.3000000119209,
+        "firstFrame": 780.7000000029802,
+        "markerToFrame": 345.29999999701977,
+        "fps": 12.382131631583954
+      },
+      "resources": [
+        {
+          "name": "index-Dc5dvPlv.js",
+          "transferSize": 0,
+          "encodedBodySize": 2015,
+          "duration": 0
+        },
+        {
+          "name": "index-puiP-bMX.css",
+          "transferSize": 0,
+          "encodedBodySize": 2497,
+          "duration": 0
+        },
+        {
+          "name": "marker.svg",
+          "transferSize": 0,
+          "encodedBodySize": 282,
+          "duration": 0
+        },
+        {
+          "name": "viewer-CS7w73-M.js",
+          "transferSize": 0,
+          "encodedBodySize": 175156,
+          "duration": 0
+        },
+        {
+          "name": "joy-0e271734dcd4.glb",
+          "transferSize": 0,
+          "encodedBodySize": 969046,
+          "duration": 3.5
+        },
+        {
+          "name": "tracker-BuB_4bRZ.js",
+          "transferSize": 0,
+          "encodedBodySize": 303619,
+          "duration": 0
+        },
+        {
+          "name": "camera_para.dat",
+          "transferSize": 0,
+          "encodedBodySize": 176,
+          "duration": 0.3999999910593033
+        }
+      ],
+      "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  ]
+}

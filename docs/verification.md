@@ -6,7 +6,7 @@ Date: November 15, 2026 (Asia/Tehran).
 
 - TypeScript strict check and Vite production build under `/Ar-Mvp/`.
 - GLB v2 header and file length; 67-joint skin, joint/weight attributes, 201 animation channels, unchanged 8.0333338-second duration and 131,966 triangles; replaceable CRT screen retained.
-- Chromium 145, Windows desktop, mobile viewport 412 × 915. Five browser scenarios pass: fallback controls and animation; denied camera/retry/fallback; failed GLB fetch/retry; actual barcode detection/pose movement/loss/reacquisition, paused animation on loss, rendered geometry, stopped media tracks on exit, AR restart and navigation cleanup; and leaving while camera permission is pending, with a late stream safely stopped.
+- Chromium 145, Windows desktop, mobile viewport 412 × 915. Six browser scenarios pass locally and on the Linux GitHub Actions runner: fallback controls and animation; denied camera/retry/fallback; failed GLB fetch/retry; actual barcode detection/pose movement/loss/reacquisition, paused animation on loss, rendered geometry, stopped media tracks on exit, AR restart and navigation cleanup; leaving while camera permission is pending, with a late stream safely stopped; and failed tracker download during a pending prompt, with recovery and no leaked capture.
 - Real detector uses generated SVG frames through a canvas `captureStream` video. It is not a mocked marker-found callback. Tests validate a nonzero negative camera-space Z, moving X position, and more than 100,000 rendered triangles.
 - Visual screenshots checked for Joy, seated typing pose, original dark-brown furniture, lamp, CRT, face/eyes, and preserved model geometry. Soft contact shadows replace the source's expensive dynamic shadow map.
 - Default-muted audio can be enabled through a user gesture. Synthesized clicks reuse the 28 source timestamps and pause on loss/exit.
@@ -14,8 +14,34 @@ Date: November 15, 2026 (Asia/Tehran).
 
 ## Deployment
 
-Pages uses GitHub Actions, on `main`, with HTTPS enforced. The official workflow runs build and browser checks before deployment. [Successful deployment](https://github.com/rezasoroush28/Ar-Mvp/actions/runs/43709083728) published https://rezasoroush28.github.io/Ar-Mvp/. The homepage, printable marker page, SVG, calibration, runtime GLB, credits, and unmodified tracker download returned HTTP 200. The GLB response uses `model/gltf-binary`. The landing and viewer scripts, CSS, embedded WASM/decoder and calibration load from the same `/Ar-Mvp/` origin/path.
+Pages uses GitHub Actions, on `main`, with HTTPS enforced. The official workflow runs build and browser checks before deployment. [Successful deployment and all six browser checks](https://github.com/rezasoroush28/Ar-Mvp/actions/runs/43709723186) published https://rezasoroush28.github.io/Ar-Mvp/. The homepage, printable marker page, SVG, calibration, runtime GLB, credits, and unmodified tracker download returned HTTP 200. The GLB response uses `model/gltf-binary`. The landing and viewer scripts, CSS, embedded WASM/decoder and calibration load from the same `/Ar-Mvp/` origin/path.
 
 ## Device limitations
 
 No Samsung Galaxy A55 was attached. Actual rear-camera selection, optics/calibration accuracy, measured physical size/alignment, permission UI, audio perception, thermal behavior, and sustained 30 FPS need the physical checklist in README. Desktop software-renderer FPS is not an A55 measurement. Synthetic fixture testing verifies the implementation and integration, not real-world lighting, marker distance, occlusion, or lens performance.
+
+## Deployed cold/warm measurement
+
+Measured at the live HTTPS URL, with runtime from commit `9b6461a`, Chromium 145 on Windows, Intel Core i7-12700K, **ANGLE SwiftShader software rendering**, 412 × 915 mobile viewport, DPR 1.5, **4× CPU slowdown**, and CDP network shaping at **10 Mbps download / 2 Mbps upload / 80 ms latency**. One cold/warm pair per mode, not statistical percentiles. Warm visits reload in the same browser context with HTTP cache enabled. AR uses an SVG canvas camera fixture; camera-ready time excludes a human permission decision and real hardware startup. All times below start at the button tap and include lazy viewer download/initialization.
+
+| Measurement | 3D cold | 3D warm | AR fixture cold | AR fixture warm |
+| --- | ---: | ---: | ---: | ---: |
+| Asset transfer bytes | 1,149,914 | 0 | 1,454,891 | 0 |
+| Camera ready | — | — | 735 ms | 176 ms |
+| Model decoded and ready | 2,635 ms | 192 ms | 3,898 ms | 570 ms |
+| Tracker ready | — | — | 4,141 ms | 393 ms |
+| First rendered scene frame | 2,827 ms | 368 ms | 4,412 ms | 781 ms |
+| First marker detection → scene frame | — | — | 199 ms | 345 ms |
+| Representative frame rate | 17.4 FPS | 19.7 FPS | 12.6 FPS | 12.4 FPS |
+
+Transfers are Resource Timing entries (compiled scripts/CSS, model, calibration, fixture image); the navigation HTML is excluded. Zero warm transfer indicates browser-cache reuse, not zero decode/render cost. Rendered frame timing records the return from the first `renderer.render` with visible geometry; actual display presentation can be later. FPS is a representative one-second window after a 3.5-second settle, not sustained thermal performance. There are 19 render calls (16 model + CRT + 2 contact shadows) and 131,972 rendered triangles.
+
+**The 30 FPS target was not reached on this intentionally throttled software renderer. This is not a Galaxy A55 result.** Actual A55 GPU rendering and two-minute thermal/FPS testing remain unverified. No texture-upload bottleneck has been established on the phone; KTX2 remains deferred pending those measurements.
+
+Raw per-resource transfer/duration, GPU and browser strings, and app timings: [load-benchmark.json](load-benchmark.json). Reproduce with a built preview or the deployment:
+
+```sh
+node scripts/benchmark.mjs https://rezasoroush28.github.io/Ar-Mvp/
+```
+
+The untouched local source copy was SHA-256 matched to the supplied file: `FC4315A6C3E816DD3FBAD5CE21DABD1D603C3695B5130EAE29CFE25CF23F39E5`. `scripts/reference-preview.mjs` renders that original HTML locally for visual comparison without publishing it.
