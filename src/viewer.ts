@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { loadWorld, JoyWorld } from './world';
+import { loadWorld, JoyWorld, SCENE_WIDTH_METERS } from './world';
+import { MARKER_WIDTH_METERS } from './marker-config';
 import type { Tracker } from './tracker';
 export class Viewer {
   private renderer = new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'high-performance'});
@@ -20,6 +21,7 @@ export class Viewer {
   private frames=0;
   private fpsStart=0;
   private metrics: Record<string,number>={};
+  private diagnostics = new URLSearchParams(location.search).has('debug');
   constructor(private stage: HTMLElement,private status: (s:string)=>void){
     this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
     this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.05;
@@ -36,7 +38,7 @@ export class Viewer {
     this.scene.background=mode==='3d'?new THREE.Color('#11151d'):null;
     const model=loadWorld().then(world=>{
       if(revision!==this.revision)return;
-      this.world=world;world.mute();this.anchor.add(world.root);this.metrics.modelReady=performance.now()-this.metrics.started;
+      this.world=world;world.mute();world.setFootprint(mode==='ar'?MARKER_WIDTH_METERS:SCENE_WIDTH_METERS);this.anchor.add(world.root);this.metrics.modelReady=performance.now()-this.metrics.started;
     });
     const camera=mode==='ar'?this.startCamera(revision):Promise.resolve();
     // Attach rejection handlers immediately to both concurrent operations.
@@ -97,6 +99,7 @@ export class Viewer {
     if(now-this.fpsStart>1000){this.metrics.fps=this.frames*1000/(now-this.fpsStart);this.frames=0;this.fpsStart=now;}
     Object.assign(this.metrics,{drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,anchorX:this.anchor.position.x,anchorY:this.anchor.position.y,anchorZ:this.anchor.position.z});
     (window as Window & {joyMetrics?:Record<string,number>}).joyMetrics={...this.metrics};
+    if(this.diagnostics&&this.tracker)window.joyTracking={...this.tracker.snapshot(),bounds:this.world?.getBaseBounds()};
   }
   resetView(){
     const factor=Math.max(1,Math.min(2.5,.8/(innerWidth/innerHeight)));

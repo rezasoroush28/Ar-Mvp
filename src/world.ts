@@ -13,7 +13,10 @@ export class JoyWorld {
   readonly root = new THREE.Group();
   readonly mixer: THREE.AnimationMixer;
   readonly duration: number;
-  readonly scale: number;
+  scale = 1;
+  readonly content = new THREE.Group();
+  private readonly sourceFootprint: THREE.Box3;
+  private readonly lamp: THREE.SpotLight;
   private time = 0;
   private pen?: CanvasRenderingContext2D;
   private screen?: THREE.CanvasTexture;
@@ -29,15 +32,29 @@ export class JoyWorld {
     this.mixer = new THREE.AnimationMixer(model);
     this.mixer.clipAction(clip).play();
     model.updateMatrixWorld(true);
-    const bounds = new THREE.Box3().setFromObject(model);
-    const center = bounds.getCenter(new THREE.Vector3());
-    this.scale = SCENE_WIDTH_METERS / bounds.getSize(new THREE.Vector3()).x;
-    const content = new THREE.Group();
-    content.scale.setScalar(this.scale);
-    content.position.set(-center.x*this.scale, -bounds.min.y*this.scale, -center.z*this.scale);
+    const bounds = new THREE.Box3().setFromObject(model,true);
+    // Measure the lowest static geometry: upper-body/skin bounds must not move
+    // the base center or enlarge its footprint. The original scene has a plinth.
+    const meshes: THREE.Mesh[]=[];
+    const staticBounds=new THREE.Box3();
+    model.traverse(o=>{if(o instanceof THREE.Mesh&&!(o instanceof THREE.SkinnedMesh)){meshes.push(o);staticBounds.union(new THREE.Box3().setFromObject(o,true));}});
+    const bottom=staticBounds.isEmpty()?bounds.min.y:staticBounds.min.y;
+    const epsilon=bounds.getSize(new THREE.Vector3()).y*.005;
+    const footprint=new THREE.Box3(),point=new THREE.Vector3();
+    for(const mesh of meshes){
+      const positions=mesh.geometry.getAttribute('position');
+      for(let i=0;i<positions.count;i++){
+        point.fromBufferAttribute(positions,i).applyMatrix4(mesh.matrixWorld);
+        if(point.y<=bottom+epsilon)footprint.expandByPoint(point);
+      }
+    }
+    this.sourceFootprint=footprint.isEmpty()?bounds.clone():footprint;
+    // Build the screen, lights, and shadows in original model coordinates first.
+    // Applying placement before measuring the monitor would scale its panel twice.
+    const content = this.content;
     this.root.add(content); content.add(model);
     content.add(new THREE.HemisphereLight('#c1cbe4','#171a25',.34));
-    const lamp = new THREE.SpotLight('#ffd49a', 7*this.scale**2, 4*this.scale, 1.02, .65, 2);
+    const lamp = this.lamp = new THREE.SpotLight('#ffd49a', 7, 4, 1.02, .65, 2);
     lamp.position.set(0,1.205,.015); lamp.target.position.set(-.06,.30,.20);
     content.add(lamp,lamp.target);
     const rim = new THREE.DirectionalLight('#a6b8e1',.28);
@@ -52,7 +69,25 @@ export class JoyWorld {
     this.screen = new THREE.CanvasTexture(canvas); this.screen.colorSpace = THREE.SRGBColorSpace;
     const panel = new THREE.Mesh(new THREE.PlaneGeometry(size.x*.985,size.y*.985),new THREE.MeshBasicMaterial({map:this.screen,side:THREE.DoubleSide}));
     panel.position.set(c.x,c.y,box.min.z-.003); panel.rotation.y = Math.PI; content.add(panel);
+    this.setFootprint(SCENE_WIDTH_METERS);
     this.paint();
+  }
+  setFootprint(width: number) {
+    const size = this.sourceFootprint.getSize(new THREE.Vector3());
+    const center = this.sourceFootprint.getCenter(new THREE.Vector3());
+    // Uniformly fit the full base inside the marker, preserving artwork proportions.
+    this.scale = width / Math.max(size.x,size.z);
+    this.content.scale.setScalar(this.scale);
+    this.content.position.set(-center.x*this.scale,-this.sourceFootprint.min.y*this.scale,-center.z*this.scale);
+    this.lamp.intensity = 7*this.scale**2;
+    this.lamp.distance = 4*this.scale;
+    this.root.updateMatrixWorld(true);
+  }
+  getBaseBounds() {
+    return {
+      min: this.sourceFootprint.min.clone().multiplyScalar(this.scale).add(this.content.position).toArray(),
+      max: this.sourceFootprint.max.clone().multiplyScalar(this.scale).add(this.content.position).toArray(),
+    };
   }
   private addContactShadows(group: THREE.Group,y: number) {
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 128;

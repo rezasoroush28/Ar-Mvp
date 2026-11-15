@@ -49,3 +49,11 @@ The untouched local source copy was SHA-256 matched to the supplied file: `FC431
 ## Scan-to-website card
 
 The experience is entirely web-based; no application installation is required. A seventh browser scenario verifies that both the standalone QR PNG and QR within the complete printable card decode to `https://rezasoroush28.github.io/Ar-Mvp/?ar=1`. That URL shows a focused browser entry with Start AR and instructions. The camera is requested only after the button tap. Print layout preserves the card at 180 × 210 mm, including the unchanged 80 mm tracking square and its quiet border. The QR opens the website; the large barcode anchors Joy on the same card. Native phone-camera QR recognition and actual phone tracking remain physical checks.
+
+## Base alignment and perspective
+
+The base is measured from vertices near the lowest static floor/plinth, excluding character skin bounds and overhead objects. Its bottom is placed at marker-plane Y=0, its footprint center at marker XZ=(0,0), and its longest footprint dimension fitted to 0.080 m with uniform scale. The 3D fallback uses 0.160 m. The CRT overlay is assembled before placement so its coordinates are not scaled twice.
+
+An eighth browser scenario feeds the actual tracker perspective-rendered camera frames from a known pinhole camera and verifies that projected marker-plane corners stay within 4 processing pixels of the physical target across flat view, pitch up to 55°, yaw up to 40°, roll up to 35°, 0.32–0.40 m distance, and lateral/vertical movement. It checks the surface normal, zero base height, centered footprint, and identical video/WebGL cover transforms after viewport rotation. Camera calibration is intercepted with a matching ideal camera for this controlled geometry test; it does not validate the Galaxy A55's lens calibration. Production still uses bundled generic calibration and needs the real-phone check.
+
+Only subpixel pose changes are smoothed; larger movements use the latest pose immediately. Append `?debug=1` to expose `window.joyTracking` with detected/projected corners, surface normal, and base bounds for alignment diagnostics. The normal user flow does not display these internals. The model remains marker-relative while the marker is visible, hides after loss, and reacquires on return.
