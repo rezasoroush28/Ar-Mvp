@@ -33,11 +33,11 @@ test('real detector follows barcode fixture, hides on loss, reacquires, stops ca
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('./');
  await page.evaluate(async()=>{
-  const image=new Image();image.src=new URL('marker.svg',location.href).href;await image.decode();
+  const image=new Image();image.src=new URL('ar-card.svg',location.href).href;await image.decode();
   const canvas=document.createElement('canvas');canvas.width=640;canvas.height=480;const ctx=canvas.getContext('2d')!;
   const fixture={x:320,y:240,rotation:0,visible:true,stream:canvas.captureStream(30)};
   Object.assign(window,{fixture});
-  const draw=()=>{ctx.fillStyle='#fff';ctx.fillRect(0,0,640,480);if(fixture.visible){ctx.save();ctx.translate(fixture.x,fixture.y);ctx.rotate(fixture.rotation);ctx.scale(1,.72);ctx.drawImage(image,-100,-100,200,200);ctx.restore();}requestAnimationFrame(draw);};draw();
+  const draw=()=>{ctx.fillStyle='#fff';ctx.fillRect(0,0,640,480);if(fixture.visible){ctx.save();ctx.translate(fixture.x,fixture.y);ctx.rotate(fixture.rotation);ctx.scale(1,.72);ctx.drawImage(image,-100,-116.667,200,233.333);ctx.restore();}requestAnimationFrame(draw);};draw();
   navigator.mediaDevices.getUserMedia=async()=>fixture.stream=canvas.captureStream(30);
  });
  await page.getByRole('button',{name:'Start AR'}).click();await ready(page);

@@ -1,0 +1,24 @@
+import {test,expect} from '@playwright/test';
+import sharp from 'sharp';
+import jsQR from 'jsqr';
+test('printed QR opens the browser entry and does not request camera before Start AR',async({page})=>{
+ const image=await sharp('public/open-joy.png').ensureAlpha().raw().toBuffer({resolveWithObject:true});
+ const qr=jsQR(new Uint8ClampedArray(image.data),image.info.width,image.info.height);
+ expect(qr?.data).toBe('https://rezasoroush28.github.io/Ar-Mvp/?ar=1');
+ const card=await sharp('public/ar-card.png').ensureAlpha().raw().toBuffer({resolveWithObject:true});
+ expect(jsQR(new Uint8ClampedArray(card.data),card.info.width,card.info.height)?.data).toBe(qr?.data);
+ await page.addInitScript(()=>{Object.assign(window,{cameraRequests:0});navigator.mediaDevices.getUserMedia=async()=>{(window as any).cameraRequests++;throw new DOMException('Test denial','NotAllowedError');};});
+ await page.goto('./?ar=1');
+ await expect(page.locator('.privacy')).toContainText('Nothing to install');
+ await expect(page.locator('.lede')).toContainText('large black square');
+ expect(await page.evaluate(()=>(window as any).cameraRequests)).toBe(0);
+ await page.getByRole('button',{name:'Start AR'}).click();
+ await expect(page.locator('#error')).toBeVisible();
+ expect(await page.evaluate(()=>(window as any).cameraRequests)).toBe(1);
+ await page.goto('marker.html');
+ await page.emulateMedia({media:'print'});
+ await expect(page.locator('.no-print').first()).toBeHidden();
+ const dimensions=await page.locator('img').evaluate(img=>({width:img.getBoundingClientRect().width,height:img.getBoundingClientRect().height}));
+ expect(dimensions.width).toBeCloseTo(180*96/25.4,0);
+ expect(dimensions.height).toBeCloseTo(210*96/25.4,0);
+});

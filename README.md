@@ -1,6 +1,8 @@
 # Joy at work — marker AR MVP
 
-[Open the app](https://rezasoroush28.github.io/Ar-Mvp/) · [Print marker](https://rezasoroush28.github.io/Ar-Mvp/marker.html) · [Credits](https://rezasoroush28.github.io/Ar-Mvp/credits.html)
+[Open the website](https://rezasoroush28.github.io/Ar-Mvp/) · [Print AR card](https://rezasoroush28.github.io/Ar-Mvp/marker.html) · [Credits](https://rezasoroush28.github.io/Ar-Mvp/credits.html)
+
+**This is entirely web-based. There is no app to install.** Print the AR card, scan its small QR with the phone camera, open the website in Chrome, tap Start AR and allow Camera, then point at the large square barcode on the same card. Joy appears on that large square. The small QR opens `https://rezasoroush28.github.io/Ar-Mvp/?ar=1`; the large square supplies continuous spatial tracking. The QR and tracking barcode have separate jobs. The browser still requires camera permission.
 
 A mobile-first, static TypeScript/Vite/Three.js app. **Start AR** opens the rear camera and continuously follows an ARToolKit matrix marker. **View 3D** uses the same decoded model, typing loop, animated CRT, lamp lighting, and optional keyboard clicks without camera permission. Sound starts muted. All processing stays in the browser.
 
@@ -24,7 +26,7 @@ The repository was empty, with `main` configured as its default branch. There wa
 
 ## Print and place
 
-Print `public/marker.html` on matte white A4 paper at **100% / Actual size**; disable Fit to page and browser headers/footers. Measure the **outside black square: exactly 80 × 80 mm**. The SVG is 120 × 120 mm including a 20 mm white quiet margin on each side. Keep the white border, avoid glare, and do not crop the black corners.
+Print `public/marker.html` on matte white A4 paper at **100% / Actual size**; disable Fit to page and browser headers/footers. The complete printable card is `public/ar-card.svg` (180 × 210 mm), also provided as PNG. Measure the **outside black square: exactly 80 × 80 mm**. The standalone marker SVG is 120 × 120 mm including a 20 mm white quiet margin on each side. Keep the white border, avoid glare, and do not crop the black corners. `scripts/make-ar-card.mjs` regenerates the QR and combined card during every build, without adding a QR library to the browser bundle.
 
 - Fixed family: **ARToolKit 3×3**, ID **5**, pattern ratio **0.5**.
 - Physical tracked width: **0.080 m**, excluding the white margin.

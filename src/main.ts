@@ -56,6 +56,12 @@ $('pause').onclick = () => {
   const paused = session?.togglePause(); $('pause').textContent = paused ? 'Play' : 'Pause'; $('pause').setAttribute('aria-pressed',String(!!paused));
 };
 $('reset').onclick = () => session?.resetView();
+if(new URLSearchParams(location.search).get('ar')==='1'){
+  $('landing').classList.add('scan-entry');
+  document.querySelector('h1')!.textContent='Your little world is ready.';
+  document.querySelector('.lede')!.textContent='Tap Start AR, allow your camera, then point at the large black square on your printed card. Joy will appear on that square.';
+  document.querySelector('.privacy')!.textContent='100% in your browser. Nothing to install. Camera stays on your device.';
+}
 addEventListener('pagehide', exit);
 addEventListener('keydown', e => { if (e.key === 'Escape' && !$('viewer').hidden) exit(); });
 document.addEventListener('visibilitychange', () => {

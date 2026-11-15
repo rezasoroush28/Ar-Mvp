@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "check": "tsc --noEmit",
-    "build": "npm run check && node scripts/verify-assets.mjs && node scripts/publish-metadata.mjs && vite build",
+    "build": "npm run check && node scripts/verify-assets.mjs && node scripts/publish-metadata.mjs && node scripts/make-ar-card.mjs && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "assets": "node scripts/prepare-assets.mjs",
     "test": "playwright test"
@@ -22,6 +22,8 @@
     "@gltf-transform/functions": "4.5.1",
     "@playwright/test": "1.58.2",
     "@types/three": "0.183.1",
+    "jsqr": "1.4.0",
+    "qrcode": "1.5.4",
     "sharp": "0.35.5",
     "typescript": "5.9.3",
     "vite": "7.3.8"

@@ -7,7 +7,7 @@ Date: November 15, 2026 (Asia/Tehran).
 - TypeScript strict check and Vite production build under `/Ar-Mvp/`.
 - GLB v2 header and file length; 67-joint skin, joint/weight attributes, 201 animation channels, unchanged 8.0333338-second duration and 131,966 triangles; replaceable CRT screen retained.
 - Chromium 145, Windows desktop, mobile viewport 412 × 915. Six browser scenarios pass locally and on the Linux GitHub Actions runner: fallback controls and animation; denied camera/retry/fallback; failed GLB fetch/retry; actual barcode detection/pose movement/loss/reacquisition, paused animation on loss, rendered geometry, stopped media tracks on exit, AR restart and navigation cleanup; leaving while camera permission is pending, with a late stream safely stopped; and failed tracker download during a pending prompt, with recovery and no leaked capture.
-- Real detector uses generated SVG frames through a canvas `captureStream` video. It is not a mocked marker-found callback. Tests validate a nonzero negative camera-space Z, moving X position, and more than 100,000 rendered triangles.
+- Real detector uses generated SVG frames through a canvas `captureStream` video. It is not a mocked marker-found callback. Tests validate a nonzero negative camera-space Z, moving X position, and more than 100,000 rendered triangles. The current fixture uses the complete printable AR card, including its adjacent QR and instructions.
 - Visual screenshots checked for Joy, seated typing pose, original dark-brown furniture, lamp, CRT, face/eyes, and preserved model geometry. Soft contact shadows replace the source's expensive dynamic shadow map.
 - Default-muted audio can be enabled through a user gesture. Synthesized clicks reuse the 28 source timestamps and pause on loss/exit.
 - `npm audit`: zero known vulnerabilities after pinned Axios and esbuild overrides and patched Vite.
@@ -45,3 +45,7 @@ node scripts/benchmark.mjs https://rezasoroush28.github.io/Ar-Mvp/
 ```
 
 The untouched local source copy was SHA-256 matched to the supplied file: `FC4315A6C3E816DD3FBAD5CE21DABD1D603C3695B5130EAE29CFE25CF23F39E5`. `scripts/reference-preview.mjs` renders that original HTML locally for visual comparison without publishing it.
+
+## Scan-to-website card
+
+The experience is entirely web-based; no application installation is required. A seventh browser scenario verifies that both the standalone QR PNG and QR within the complete printable card decode to `https://rezasoroush28.github.io/Ar-Mvp/?ar=1`. That URL shows a focused browser entry with Start AR and instructions. The camera is requested only after the button tap. Print layout preserves the card at 180 × 210 mm, including the unchanged 80 mm tracking square and its quiet border. The QR opens the website; the large barcode anchors Joy on the same card. Native phone-camera QR recognition and actual phone tracking remain physical checks.
