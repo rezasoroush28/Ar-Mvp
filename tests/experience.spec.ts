@@ -38,7 +38,7 @@ test('real detector follows barcode fixture, hides on loss, reacquires, stops ca
   const fixture={x:320,y:240,rotation:0,visible:true,stream:canvas.captureStream(30)};
   Object.assign(window,{fixture});
   const draw=()=>{ctx.fillStyle='#fff';ctx.fillRect(0,0,640,480);if(fixture.visible){ctx.save();ctx.translate(fixture.x,fixture.y);ctx.rotate(fixture.rotation);ctx.scale(1,.72);ctx.drawImage(image,-100,-100,200,200);ctx.restore();}requestAnimationFrame(draw);};draw();
-  navigator.mediaDevices.getUserMedia=async()=>fixture.stream;
+  navigator.mediaDevices.getUserMedia=async()=>fixture.stream=canvas.captureStream(30);
  });
  await page.getByRole('button',{name:'Start AR'}).click();await ready(page);
  await expect(page.locator('html')).toHaveAttribute('data-tracked','true',{timeout:20000});
@@ -55,5 +55,23 @@ test('real detector follows barcode fixture, hides on loss, reacquires, stops ca
  expect(await page.evaluate(()=>(window as any).joyMetrics.anchorZ)).toBeLessThan(-.05);
  await page.getByRole('button',{name:'← Back',exact:true}).click();
  expect(await page.evaluate(()=>(window as any).fixture.stream.getTracks().every((t:MediaStreamTrack)=>t.readyState==='ended'))).toBe(true);
+ await page.getByRole('button',{name:'Start AR'}).click();await ready(page);
+ await expect(page.locator('html')).toHaveAttribute('data-tracked','true',{timeout:20000});
+ await page.evaluate(()=>addEventListener('pagehide',()=>sessionStorage.setItem('cameraStopped',String((window as any).fixture.stream.getTracks().every((t:MediaStreamTrack)=>t.readyState==='ended')))));
+ await page.goto('marker.html');expect(await page.evaluate(()=>sessionStorage.getItem('cameraStopped'))).toBe('true');
  expect(errors).toEqual([]);
+});
+test('leaving while camera permission is pending stops a late camera stream',async({page})=>{
+ await page.goto('./');
+ await page.evaluate(()=>{
+  const canvas=document.createElement('canvas');canvas.width=640;canvas.height=480;
+  const stream=canvas.captureStream(30);Object.assign(window,{lateStream:stream});
+  navigator.mediaDevices.getUserMedia=()=>new Promise(resolve=>Object.assign(window,{resolveCamera:()=>resolve(stream)}));
+ });
+ await page.getByRole('button',{name:'Start AR'}).click();
+ await page.waitForFunction(()=>typeof (window as any).resolveCamera==='function');
+ await page.getByRole('button',{name:'← Back',exact:true}).click();
+ await page.evaluate(()=>(window as any).resolveCamera());
+ await expect.poll(()=>page.evaluate(()=>(window as any).lateStream.getTracks()[0].readyState)).toBe('ended');
+ await expect(page.locator('#landing')).toBeVisible();
 });

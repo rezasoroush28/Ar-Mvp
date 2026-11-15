@@ -29,9 +29,9 @@ export class Viewer {
     addEventListener('resize',()=>this.resize());
     this.renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();this.stop();this.status('Graphics were interrupted. Go back and reopen the scene.');});
   }
-  async start(mode: 'ar'|'3d'){
+  async start(mode: 'ar'|'3d',startedAt=performance.now()){
     this.stop();const revision=this.revision;this.mode=mode;this.paused=false;
-    this.metrics={started:performance.now()};this.anchor.position.set(0,0,0);this.anchor.quaternion.identity();this.anchor.visible=mode==='3d';
+    this.metrics={started:startedAt};this.anchor.position.set(0,0,0);this.anchor.quaternion.identity();this.anchor.visible=mode==='3d';
     this.camera.position.set(0,0,0);this.camera.quaternion.identity();this.orbit.enabled=mode==='3d';
     this.scene.background=mode==='3d'?new THREE.Color('#11151d'):null;
     const model=loadWorld().then(world=>{
@@ -96,7 +96,7 @@ export class Viewer {
     (window as Window & {joyMetrics?:Record<string,number>}).joyMetrics={...this.metrics};
   }
   resetView(){
-    const factor=innerWidth/innerHeight<.8?1.35:1;
+    const factor=Math.max(1,Math.min(2.5,.8/(innerWidth/innerHeight)));
     this.camera.position.set(.22*factor,.135,.10*factor);this.orbit.target.set(.005,.065,0);this.orbit.update();
   }
   private resize(){

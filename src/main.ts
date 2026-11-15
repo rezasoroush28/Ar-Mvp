@@ -9,6 +9,7 @@ function viewer() {
   return viewerPromise ??= import('./viewer').then(({ Viewer }) => session = new Viewer($('stage'), status)).catch(e => { viewerPromise = undefined; throw e; });
 }
 async function open(next: typeof mode) {
+  const startedAt = performance.now();
   const request = ++generation;
   mode = next;
   $('landing').hidden = true; $('viewer').hidden = false; $('error').hidden = true;
@@ -19,7 +20,7 @@ async function open(next: typeof mode) {
   try {
     const v = await viewer();
     if (request !== generation) return;
-    await v.start(next);
+    await v.start(next, startedAt);
     if (request !== generation) return;
     $('pause').textContent = 'Pause'; $('pause').setAttribute('aria-pressed','false');
     $('sound').textContent = 'Sound off'; $('sound').setAttribute('aria-pressed','false');
