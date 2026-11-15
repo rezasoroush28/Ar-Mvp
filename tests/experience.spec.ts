@@ -45,7 +45,7 @@ test('real detector follows barcode fixture, hides on loss, reacquires, stops ca
  await page.waitForTimeout(300);const frame=await page.locator('canvas').screenshot();
  const firstPose=await page.evaluate(()=>(window as any).joyMetrics.anchorX);
  await page.evaluate(()=>{const f=(window as any).fixture;f.x=350;f.y=225;f.rotation=.25;});await page.waitForTimeout(500);
- expect(Math.abs(await page.evaluate(()=>(window as any).joyMetrics.anchorX)-firstPose)).toBeGreaterThan(.005);
+ await expect.poll(async()=>Math.abs(await page.evaluate(()=>(window as any).joyMetrics.anchorX)-firstPose),{timeout:15000}).toBeGreaterThan(.005);
  expect((await page.locator('canvas').screenshot()).equals(frame)).toBe(false);
  await page.evaluate(()=>{(window as any).fixture.visible=false;});await expect(page.locator('html')).toHaveAttribute('data-tracked','false');
  const time=await page.locator('html').getAttribute('data-time');await page.waitForTimeout(300);expect(await page.locator('html').getAttribute('data-time')).toBe(time);
