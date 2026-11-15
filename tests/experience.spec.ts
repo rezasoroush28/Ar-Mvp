@@ -75,3 +75,21 @@ test('leaving while camera permission is pending stops a late camera stream',asy
  await expect.poll(()=>page.evaluate(()=>(window as any).lateStream.getTracks()[0].readyState)).toBe('ended');
  await expect(page.locator('#landing')).toBeVisible();
 });
+test('tracker download failure during a permission prompt offers recovery without leaking capture',async({page})=>{
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/assets/tracker-*.js',route=>route.abort());
+ await page.goto('./');
+ await page.evaluate(()=>{
+  const canvas=document.createElement('canvas');canvas.width=640;canvas.height=480;
+  const draw=()=>{canvas.getContext('2d')!.fillRect(0,0,640,480);requestAnimationFrame(draw);};draw();
+  const stream=canvas.captureStream(30);Object.assign(window,{lateStream:stream});
+  navigator.mediaDevices.getUserMedia=()=>new Promise(resolve=>Object.assign(window,{resolveCamera:()=>resolve(stream)}));
+ });
+ await page.getByRole('button',{name:'Start AR'}).click();
+ await page.waitForFunction(()=>typeof (window as any).resolveCamera==='function');
+ await page.waitForTimeout(200);expect(errors).toEqual([]);
+ await page.evaluate(()=>(window as any).resolveCamera());
+ await expect(page.locator('#error')).toBeVisible();
+ expect(await page.evaluate(()=>(window as any).lateStream.getTracks()[0].readyState)).toBe('ended');
+ await page.locator('#fallback').click();await ready(page);expect(errors).toEqual([]);
+});

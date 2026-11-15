@@ -18,8 +18,9 @@ async function metrics(doc,bytes){
 const before=await metrics(original,(await fs.stat('source/joy-original.glb')).size);
 const doc=cloneDocument(original);
 await doc.transform(dedup(),prune({keepLeaves:true}),resample(),weld(),flatten(),join({filter:node=>!node.getSkin()&&!/MY.?SCREEN/i.test(node.getName())}));
-// Use Sharp directly: current glTF Transform color-space option is incompatible
-// with Windows libvips. This preserves alpha and explicitly converts to sRGB.
+// Encode directly with the pinned Sharp/libvips version, preserving alpha and
+// explicitly converting to sRGB. Keep helper dependencies on the same native
+// version: mixing Sharp versions in one Windows process caused color errors.
 for(const texture of doc.getRoot().listTextures()){
  const encoded=await sharp(texture.getImage()).toColourspace('srgb').resize({width:1024,height:1024,fit:'inside',withoutEnlargement:true}).webp({quality:88}).toBuffer();
  texture.setImage(new Uint8Array(encoded)).setMimeType('image/webp');

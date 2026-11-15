@@ -52,6 +52,9 @@ export class Viewer {
     if(!navigator.mediaDevices?.getUserMedia)throw new Error('This browser does not support camera access.');
     // Camera permission starts while the tracker chunk and model fetch in parallel.
     const tracking=import('./tracker');
+    // Permission may stay pending longer than a failed chunk request. Attach a
+    // handler immediately; the await below still propagates it into recovery.
+    void tracking.catch(()=>{});
     const stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:640},height:{ideal:480},frameRate:{ideal:30,max:30}}});
     if(revision!==this.revision){stream.getTracks().forEach(t=>t.stop());return;}
     this.stream=stream;
