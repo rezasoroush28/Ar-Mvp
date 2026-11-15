@@ -1,0 +1,2 @@
+import { defineConfig } from '@playwright/test';
+export default defineConfig({testDir:'./tests',timeout:60000,workers:1,use:{baseURL:process.env.TEST_URL||'http://127.0.0.1:4173/Ar-Mvp/',viewport:{width:412,height:915},launchOptions:{args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']},screenshot:'only-on-failure'},webServer:process.env.TEST_URL?undefined:{command:'npm run preview -- --port 4173',url:'http://127.0.0.1:4173/Ar-Mvp/',reuseExistingServer:!process.env.CI}});

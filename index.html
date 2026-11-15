@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#151b22"><meta name="description" content="Bring Joy’s little coding world to your desk. Print a marker, start your camera, and watch her work."><title>Joy at work · A little world in AR</title></head>
+<body>
+  <main id="landing">
+    <nav><a class="wordmark" href="./" aria-label="Joy at work home"><span class="spark">✦</span> little worlds<span class="edition">EXPERIMENT 001</span></a><a href="credits.html">Credits ↗</a></nav>
+    <div class="hero">
+      <div class="intro"><span class="eyebrow"><i></i> A LITTLE JOY, IN YOUR WORLD</span><h1>Good things.<br>One keystroke<br>at a <em>time.</em></h1><p class="lede">A lamp, a late-night idea, and Joy at her keyboard.<br>Make a little room for her on your desk.</p>
+        <div class="actions"><button id="start" class="primary">Start AR <span aria-hidden="true">↗</span></button><button id="view">View 3D <span aria-hidden="true">↻</span></button></div><p class="privacy">Camera stays on your device. Sound starts off.</p>
+      </div>
+      <div class="art" aria-label="A small desk under a warm overhead lamp"><div class="halo"></div><div class="lamp-cord"></div><div class="lamp-shade"></div><div class="light-beam"></div><div class="mini-desk"><div class="crt"><div class="crt-screen">&gt; hello, world_<br><br>const joy = true;<br>buildSomething();</div></div><div class="crt-foot"></div><div class="keyboard"></div><div class="table-top"></div><div class="table-leg left"></div><div class="table-leg right"></div><div class="stool"></div><span class="tiny-spark">✦</span></div><div class="art-caption"><span>JOY AT WORK</span><span>AN ANIMATED AR STUDY</span></div></div>
+    </div>
+    <section class="steps" aria-label="How it works"><div><span class="step-number">01</span><h2>Print a little portal.</h2><p>One black-and-white marker. Plain paper works.</p><a href="marker.html" target="_blank" rel="noopener">Print marker <span>↗</span></a></div><div><span class="step-number">02</span><h2>Let your camera in.</h2><p>Tap Start AR, then allow the rear camera.</p></div><div><span class="step-number">03</span><h2>Meet your desk buddy.</h2><p>Point at the whole marker. Move around her world.</p></div></section>
+    <footer><span>SMALL SCENES. EVERYDAY MAGIC.</span><span>Made for a moment of joy. <span class="spark">✦</span></span></footer>
+  </main>
+  <section id="viewer" hidden aria-label="Interactive Joy scene"><div id="stage"></div><div class="viewer-top"><button id="exit">← Back</button><span id="mode-label">JOY AT WORK</span><button id="sound" aria-pressed="false">Sound off</button></div><div id="notice" role="status" aria-live="polite"></div><div id="error" role="alert" hidden><span class="eyebrow">LET’S TRY THAT AGAIN</span><h2 id="error-title">The scene needs a moment.</h2><p id="error-message"></p><button id="retry" class="primary">Try again</button><button id="fallback">View 3D</button><button id="error-exit">Back to home</button></div><div class="viewer-bottom"><span id="hint">Drag to orbit · Pinch to zoom</span><div><button id="reset">Reset view</button><button id="pause" aria-pressed="false">Pause</button><a href="marker.html" target="_blank" rel="noopener">Print marker ↗</a></div></div></section>
+  <script type="module" src="/src/main.ts"></script>
+</body></html>

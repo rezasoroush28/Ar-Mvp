@@ -1,0 +1,140 @@
+{
+  "before": {
+    "bytes": 15528876,
+    "triangles": 131966,
+    "drawCalls": 127,
+    "nodes": 1040,
+    "skins": [
+      {
+        "joints": 67
+      }
+    ],
+    "textures": [
+      {
+        "name": "exec-3983dd65-3c4e-47d6-b43a-4a6873e93a44",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 1964743,
+        "mime": "image/png"
+      },
+      {
+        "name": "Image_3",
+        "width": 2048,
+        "height": 2048,
+        "bytes": 2379,
+        "mime": "image/png"
+      },
+      {
+        "name": "Image_2",
+        "width": 2048,
+        "height": 2048,
+        "bytes": 65405,
+        "mime": "image/jpeg"
+      },
+      {
+        "name": "Image_0",
+        "width": 2048,
+        "height": 2048,
+        "bytes": 1493721,
+        "mime": "image/jpeg"
+      },
+      {
+        "name": "Image_1",
+        "width": 2048,
+        "height": 2048,
+        "bytes": 6189262,
+        "mime": "image/png"
+      }
+    ],
+    "textureMemoryRGBA": 97865237.33333333,
+    "animations": [
+      {
+        "name": "Coding Loop",
+        "channels": 201,
+        "keys": 12591,
+        "duration": 8.033333778381348
+      }
+    ],
+    "bounds": {
+      "min": [
+        -1.1300000101327896,
+        -0.07099999859929085,
+        -0.40820001296997077
+      ],
+      "max": [
+        0.7300000041723251,
+        1.64000004529953,
+        0.9682000153541566
+      ]
+    }
+  },
+  "after": {
+    "bytes": 1641120,
+    "triangles": 131966,
+    "drawCalls": 16,
+    "nodes": 83,
+    "skins": [
+      {
+        "joints": 67
+      }
+    ],
+    "textures": [
+      {
+        "name": "exec-3983dd65-3c4e-47d6-b43a-4a6873e93a44",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 80742,
+        "mime": "image/webp"
+      },
+      {
+        "name": "Image_3",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 1926,
+        "mime": "image/webp"
+      },
+      {
+        "name": "Image_2",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 1944,
+        "mime": "image/webp"
+      },
+      {
+        "name": "Image_0",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 113312,
+        "mime": "image/webp"
+      },
+      {
+        "name": "Image_1",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 52394,
+        "mime": "image/webp"
+      }
+    ],
+    "textureMemoryRGBA": 27962026.666666664,
+    "animations": [
+      {
+        "name": "Coding Loop",
+        "channels": 201,
+        "keys": 4293,
+        "duration": 8.033333778381348
+      }
+    ],
+    "bounds": {
+      "min": [
+        -1.1300000101327896,
+        -0.07105652853978656,
+        -0.40820001296997077
+      ],
+      "max": [
+        0.7300000041723251,
+        1.64000004529953,
+        0.9682000153541566
+      ]
+    }
+  }
+}
